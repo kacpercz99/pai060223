@@ -7,7 +7,7 @@
     background-color: #000000;
 }
 
-#main { 
+#main {
     position: absolute;
     text-align: center;
     left: 25%;
@@ -17,7 +17,7 @@
     grid-template-columns: auto auto auto auto;
     grid-gap: 15px;
     background-color: #e5e5e5;
-    
+
 }
 
 #centerAl {
@@ -37,7 +37,8 @@ button {
     background: #14213d;
     color: #fca311;
 }
-button:hover{
+
+button:hover {
     background: #fca311;
     color: #14213d;
 }
@@ -50,31 +51,34 @@ button:last-of-type {
     grid-area: 6 / 3 / span 1 / span 2;
 }
 
-button:nth-of-type(2){
+button:nth-of-type(2) {
     font-size: 25px;
 }
 
-button:first-of-type, button:last-of-type {
+button:first-of-type,
+button:last-of-type {
     background-color: #fca311;
     color: #14213d;
 }
-button:first-of-type:hover, button:last-of-type:hover {
+
+button:first-of-type:hover,
+button:last-of-type:hover {
     background-color: #14213d;
     color: #fca311;
 }
 
 @media only screen and (max-width: 600px) {
-    html{
+    html {
         overflow: hidden;
     }
 
     #main {
-        position:absolute;
-        top:0px;
-        right:0px;
-        bottom:0px;
-        left:0px;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
         width: auto;
         height: auto;
     }
-  }
+}
