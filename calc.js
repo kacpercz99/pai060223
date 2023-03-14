@@ -89,7 +89,7 @@ function createListeners(output, previous) {
     output.innerText = 0;
     previous = 0;
     selectedOperation = "none";
-    while (historyList.firstChild) {
+    while (historyList.childElementCount != 0) {
       historyList.removeChild(historyList.lastChild);
     }
   };
