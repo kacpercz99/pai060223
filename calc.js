@@ -59,14 +59,14 @@ function createButtons(main, buttons) {
   }
 }
 function createListeners(output, previous) {
-  let flag = "none";
-
+  let selectedOperation = "none";
   for (let i = 0; i < 10; i++) {
     let button = document.getElementById(i);
     button.onclick = function () {
-      if (flag == "ZERO") {
+      if (selectedOperation == "ZERO") {
         output.innerText = 0;
-        flag = "none";
+        previous = 0;
+        selectedOperation = "none";
       }
       if (output.innerText.length >= 12) {
         return;
@@ -80,9 +80,9 @@ function createListeners(output, previous) {
   }
 
   document.getElementById("←").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     if (output.innerText.length > 1) {
       output.innerText = output.innerText.slice(0, -1);
@@ -92,22 +92,22 @@ function createListeners(output, previous) {
   };
 
   document.getElementById("AC").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     output.innerText = 0;
     previous = 0;
-    flag = "none";
+    selectedOperation = "none";
     while (historyList.firstChild) {
       historyList.removeChild(historyList.lastChild);
     }
   };
 
   document.getElementById(".").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     if (output.innerText.indexOf(".") == -1) {
       output.innerText += ".";
@@ -115,51 +115,52 @@ function createListeners(output, previous) {
   };
 
   document.getElementById("*").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     if (output.innerText != 0) {
       previous = output.innerText;
       output.innerText = 0;
-      flag = "*";
+      selectedOperation = "*";
     }
   };
 
   document.getElementById("+").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     previous = output.innerText;
     output.innerText = 0;
-    flag = "+";
+    selectedOperation = "+";
   };
 
   document.getElementById("-").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     previous = output.innerText;
     output.innerText = 0;
-    flag = "-";
+    selectedOperation = "-";
   };
 
   document.getElementById("÷").onclick = function () {
-    if (flag == "ZERO") {
+    if (selectedOperation == "ZERO") {
       output.innerText = 0;
-      flag = "none";
+      selectedOperation = "none";
     }
     previous = output.innerText;
     output.innerText = 0;
-    flag = "÷";
+    selectedOperation = "÷";
   };
 
   document.getElementById("=").onclick = function () {
-    let historyValue = previous + " " + flag + " " + output.innerText + " = ";
+    let historyValue =
+      previous + " " + selectedOperation + " " + output.innerText + " = ";
     let result;
-    switch (flag) {
+    switch (selectedOperation) {
       case "*":
         result = output.innerText *= previous;
         break;
@@ -176,20 +177,25 @@ function createListeners(output, previous) {
       case "÷":
         if (output.innerText == 0) {
           result = output.innerText = "Division by 0 :(";
-          flag = "ZERO";
+          previous = 0;
+          selectedOperation = "ZERO";
         } else {
           result = output.innerText =
             parseFloat(previous) / parseFloat(output.innerText);
         }
         break;
     }
-    if (output.innerText.length >= 12 && flag != "ZERO") {
+    if (output.innerText.length >= 12 && selectedOperation != "ZERO") {
       result = result.toFixed(8);
       output.innerText = parseFloat(output.innerText).toFixed(8);
     }
     historyValue += result;
     let element = historyList.appendChild(document.createElement("li"));
     element.innerText = historyValue;
+
+    if (historyList.childElementCount >= 15)
+      historyList.removeChild(historyList.firstChild);
+
     historyList.appendChild(element);
   };
 }
