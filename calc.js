@@ -1,27 +1,27 @@
 let historyList;
+const buttons = [
+  "AC",
+  "←",
+  "÷",
+  7,
+  8,
+  9,
+  "*",
+  4,
+  5,
+  6,
+  "+",
+  1,
+  2,
+  3,
+  "-",
+  ".",
+  0,
+  "=",
+];
 function gen() {
   const main = document.getElementById("main");
   const output = document.createElement("div");
-  const buttons = [
-    "AC",
-    "←",
-    "÷",
-    7,
-    8,
-    9,
-    "*",
-    4,
-    5,
-    6,
-    "+",
-    1,
-    2,
-    3,
-    "-",
-    ".",
-    0,
-    "=",
-  ];
   const center = document.createElement("div");
   let previous = 0;
   center.id = "centerAl";
@@ -29,11 +29,11 @@ function gen() {
   output.id = "output";
   center.appendChild(output);
   main.appendChild(center);
-  createButtons(main, buttons);
+  createButtons(main);
   createListeners(output, previous);
 }
 
-function createButtons(main, buttons) {
+function createButtons(main) {
   historyList = document.createElement("ul");
   historyList.id = "historyList";
   historyList.innerText = "History";
@@ -47,7 +47,7 @@ function createButtons(main, buttons) {
 
   history.onmouseout = function () {
     historyList.style.visibility = "hidden";
-    history.style.opacity = 0.2;
+    history.style = null;
   };
 
   main.appendChild(history);
@@ -63,11 +63,6 @@ function createListeners(output, previous) {
   for (let i = 0; i < 10; i++) {
     let button = document.getElementById(i);
     button.onclick = function () {
-      if (selectedOperation == "ZERO") {
-        output.innerText = 0;
-        previous = 0;
-        selectedOperation = "none";
-      }
       if (output.innerText.length >= 12) {
         return;
       }
@@ -80,10 +75,6 @@ function createListeners(output, previous) {
   }
 
   document.getElementById("←").onclick = function () {
-    if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
-    }
     if (output.innerText.length > 1) {
       output.innerText = output.innerText.slice(0, -1);
     } else if (output.innerText.length == 1) {
@@ -93,8 +84,7 @@ function createListeners(output, previous) {
 
   document.getElementById("AC").onclick = function () {
     if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
+      enableButtons();
     }
     output.innerText = 0;
     previous = 0;
@@ -105,20 +95,12 @@ function createListeners(output, previous) {
   };
 
   document.getElementById(".").onclick = function () {
-    if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
-    }
     if (output.innerText.indexOf(".") == -1) {
       output.innerText += ".";
     }
   };
 
   document.getElementById("*").onclick = function () {
-    if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
-    }
     if (output.innerText != 0) {
       previous = output.innerText;
       output.innerText = 0;
@@ -127,30 +109,18 @@ function createListeners(output, previous) {
   };
 
   document.getElementById("+").onclick = function () {
-    if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
-    }
     previous = output.innerText;
     output.innerText = 0;
     selectedOperation = "+";
   };
 
   document.getElementById("-").onclick = function () {
-    if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
-    }
     previous = output.innerText;
     output.innerText = 0;
     selectedOperation = "-";
   };
 
   document.getElementById("÷").onclick = function () {
-    if (selectedOperation == "ZERO") {
-      output.innerText = 0;
-      selectedOperation = "none";
-    }
     previous = output.innerText;
     output.innerText = 0;
     selectedOperation = "÷";
@@ -179,6 +149,7 @@ function createListeners(output, previous) {
           result = output.innerText = "Division by 0 :(";
           previous = 0;
           selectedOperation = "ZERO";
+          disableButtons();
         } else {
           result = output.innerText =
             parseFloat(previous) / parseFloat(output.innerText);
@@ -198,4 +169,21 @@ function createListeners(output, previous) {
 
     historyList.appendChild(element);
   };
+}
+
+function disableButtons() {
+  for (let i = 1; i < buttons.length; i++) {
+    let button = document.getElementById(buttons[i]);
+    button.disabled = true;
+    button.style.background = "gray";
+    button.style.color = "gray";
+  }
+}
+
+function enableButtons() {
+  for (let i = 1; i < buttons.length; i++) {
+    let button = document.getElementById(buttons[i]);
+    button.disabled = false;
+    button.style = null;
+  }
 }

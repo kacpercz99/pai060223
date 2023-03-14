@@ -20,8 +20,8 @@
 }
 #history {
   grid-area: 1 / 4 / span 1 / span 1;
-  background: gray;
-  opacity: 0.2;
+  background: #fca311;
+  opacity: 0.4;
   z-index: 2;
 }
 
